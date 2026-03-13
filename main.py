@@ -1,5 +1,6 @@
 from ortools.sat.python import cp_model
 from collections import defaultdict
+import time
 import random
 
 import click
@@ -45,6 +46,8 @@ def assign_problems(problems: int, group_size: int, coverage: int) -> list[list[
             model.Add(sum(member_vars[i]) - sum(member_vars[j]) >= -1)
 
     solver = cp_model.CpSolver()
+    solver.parameters.random_seed = int(time.time())
+    solver.parameters.randomize_search = True
     solver.solve(model)
 
     ret = []
